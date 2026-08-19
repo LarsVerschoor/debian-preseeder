@@ -19,4 +19,4 @@ console.log('\nPreseed config made.');
 
 startServer(preseed);
 
-console.log(readGrubConfigFromImage("C:\Users\larsv\Downloads\debian-13.6.0-amd64-netinst.iso"));
+console.log(readGrubConfigFromImage(config.image.path));

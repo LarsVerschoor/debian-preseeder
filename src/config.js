@@ -15,7 +15,7 @@ export default async function getConfig() {
 			ssh_public_key: await rl.question('SSH public key: '),
 		},
 		image: {
-			path: await rl.question('Absolute path of Debian ISO image (required to add preseed URL)')
+			path: await rl.question('Absolute path of Debian ISO image (required to add preseed URL): ')
 		}
 	};
 
