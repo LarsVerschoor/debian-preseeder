@@ -1,0 +1,101 @@
+# --------------------------------------------------------
+#   Localization
+# --------------------------------------------------------
+
+d-i debian-installer/locale string en_US.UTF-8
+d-i debian-installed/country string NL
+d-i keyboard-configuration/xkb-keymap select us
+
+# --------------------------------------------------------
+#   User creation
+# --------------------------------------------------------
+
+d-i passwd/root-login boolean false
+d-i passwd/user-fullname string {{user_fullname}}
+d-i passwd/username string {{username}}
+d-i passwd/user-password-crypted password {{user_password}}
+
+# ^ use sha512 hash
+
+# --------------------------------------------------------
+#   Clock and time zone setup
+# --------------------------------------------------------
+
+d-i clock-setup/utc boolean true
+d-i time/zone string Europe/Amsterdam
+d-i clock-setup/ntp boolean true
+
+# --------------------------------------------------------
+#   Partitioning
+# --------------------------------------------------------
+
+d-i partman-auto/disk string /dev/nvme0n1
+d-i partman-auto/method string lvm
+d-i partman-auto-lvm/guided_size string max
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-md/device_remove_md boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+
+d-i partman-auto/expert_recipe string               \
+    ci-server ::                                    \
+        512 512 512 fat32                           \
+            $iflabel{ gpt }                         \
+            $reusemethod{ }                         \
+            method{ efi }                           \
+            format{ }                               \
+        .                                           \
+        30000 30000 30000 ext4                      \
+            $lvmok{ }                               \
+            in_vg{ vg0 }                            \
+            lv_name{ root }                         \
+            method{ format } format{ }              \
+            use_filesystem{ } filesystem{ ext4 }    \
+            mountpoint{ / }                         \
+        .                                           \
+        30000 30000 30000 ext4                      \
+            $lvmok{ }                               \
+            in_vg{ vg0 }                            \
+            lv_name{ var }                          \
+            method{ format } format{ }              \
+            use_filesystem{ } filesystem{ ext4 }    \
+            mountpoint{ /var }                      \
+        .                                           \
+        4096 4096 4096 linux-swap                   \
+            $lvmok{ }                               \
+            in_vg{ vg0 }                            \
+            lv_name{ swap }                         \
+            method{ swap } format{ }                \
+        .                                           \
+        1000 1000 1000000000 ext4                    \
+            $lvmok{ }                               \
+            in_vg{ vg0 }                            \
+            lv_name{ docker }                       \
+            method{ format } format{ }              \
+            use_filesystem{ } filesystem{ ext4 }    \
+            mountpoint{ /var/lib/docker }           \
+        .
+
+d-i partman-partitioning/choose_label select gpt
+d-i partman-partitioning/default_label string gpt
+d-i partman-auto/choose_recipe select ci-server
+
+# --------------------------------------------------------
+#   Package selection
+# --------------------------------------------------------
+
+tasksel tasksel/first multiselect standard, ssh-server
+d-i pkgsel/upgrade select safe-upgrade
+
+# --------------------------------------------------------
+#   Boot loader installation
+# --------------------------------------------------------
+
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/bootdev  string /dev/nvme0n1
+
+# --------------------------------------------------------
+#   Finishing up the installation
+# --------------------------------------------------------
+
+d-i finish-install/reboot_in_progress note
