@@ -1,0 +1,23 @@
+{
+  "name": "debian-preseeder",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/LarsVerschoor/debian-preseeder#readme",
+  "bugs": {
+    "url": "https://github.com/LarsVerschoor/debian-preseeder/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LarsVerschoor/debian-preseeder.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm install && node ./src/server.js"
+  },
+  "dependencies": {
+    "unixcrypt": "^3.0.4"
+  }
+}
