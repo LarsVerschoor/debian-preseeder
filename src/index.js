@@ -19,4 +19,4 @@ console.log('\nPreseed config made.');
 
 startServer(preseed);
 
-console.log(readGrubConfigFromImage(config.image.path));
+console.log(await readGrubConfigFromImage(config.image.path));
