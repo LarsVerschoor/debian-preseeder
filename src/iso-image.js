@@ -7,7 +7,7 @@ export async function readGrubConfigFromImage(path) {
 
 	await execFileAsync("xorriso", [
 		"-osirrox", "on",
-		"-indev", "debian-13.6.0-amd64-netinst.iso",
+		"-indev", path,
 		"-extract", "/boot/grub/grub.cfg", "build/grub.cfg",
 	]);
 
