@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { readFile } from "fs";
+import { readFile } from "node:fs/promises";
 
 export async function readGrubConfigFromImage(path) {
 	const execFileAsync = promisify(execFile);
